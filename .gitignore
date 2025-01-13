@@ -1,0 +1,82 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment directories
+env/
+venv/
+ENV/
+.venv/
+.ENV/
+
+# Distribution and build files
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Pipenv, Poetry, and other package managers
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+desktop.ini
+
+# Editor/IDE-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test coverage and reports
+.coverage
+.tox/
+.cache/
+
+# Logs
+*.log
+*.out
+*.err
+
+# Temporary files
+/temp
+*.tmp
+*.temp
+*.bak
+*.orig
+*.~*
+
+# Files created by pytest
+.pytest_cache/
+
+# Ignore local environment configuration
+.env
+*.env
+
+# Ignore SQLite database files
+*.sqlite3
+
+# Ignore any additional secrets
+.secret
+
+# Custom user extensions
+*.local/
+
+# conda
+.conda/
+envs/
+*.condarc
+
+# project specific
+archive/
+*/videos/
+*/data/*
