@@ -40,8 +40,9 @@ Below are results after learning a world model and training Dyna-Q type policy t
 ## Getting Started
 
 ### Prerequisites
-- Python 3.10 or above
-- Main packages used: `gymnasium`, `minigrid`, `torch` (see [requirements.txt](requirements.txt))
+- Python 3.10
+- Main packages used: `gymnasium`, `minigrid`, `torch` (see [requirements.txt](requirements.txt)).
+- You may need to install `ffmpeg` for the rendering components, installation will depend on your system.
 
 ### Installation
 1. Clone the repository:

@@ -302,7 +302,7 @@ def sample_from_latent(model, action_list,
 	K = model.config.categorical_dim
 	latent_shape = (B, N ,K)
 		
-	random_actions_tensor = torch.tensor(action_list, device='cpu', dtype=torch.int)
+	random_actions_tensor = torch.tensor(action_list, device=device, dtype=torch.int)
 
 	if prior_type == 'uniform':
 		# sample using uniform

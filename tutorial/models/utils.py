@@ -111,7 +111,7 @@ def compute_ce_loss(recon_obs_logits, obs, weights=None, use_focal_loss=False, a
 	
 	return cross_entropy_obs
 
-def compute_uniform_prior_divergence(phi, device='cuda'):
+def compute_uniform_prior_divergence(phi, device='cpu'):
 	# phi is logits of shape [B, N, K] where B is batch, N is number of categorical distributions, K is number of classes
 	# in our case it is of the shape [B,1,8]
 	B, N, K = phi.shape

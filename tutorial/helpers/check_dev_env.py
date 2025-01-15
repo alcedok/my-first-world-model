@@ -45,3 +45,8 @@ def check_install(requirements_file='../requirements.txt'):
 
     print('All required packages are installed.')
     return
+
+def check_device():
+    import torch
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print('Using device:', device)
