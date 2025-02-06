@@ -7,7 +7,7 @@ from confs.definitions import ObservationModelConfig
 from models.utils import gumbel_softmax
 
 class ObservationModel(nn.Module):
-	def __init__(self, config: ObservationModelConfig):
+	def __init__(self, config: ObservationModelConfig, device='cpu'):
 		super().__init__()
 		self.config = config
 		self.init_gumbel_temperature = config.gumbel_temperature
@@ -20,6 +20,7 @@ class ObservationModel(nn.Module):
 		self.flat_KN = self.K*self.N
 		self.conv1_hidden_dim =  config.conv1_hidden_dim
 		self.prior_fc1_hidden_dim = 100
+		self.device = device 
 
 		# concept (object) in grid to vector embedding
 		self.obs_to_concept_embedding = nn.Embedding(num_embeddings=self.concept_dim, embedding_dim=self.concept_embed_dim)
@@ -98,10 +99,10 @@ class ObservationModel(nn.Module):
 		recon_obs_logits = self.decode(latent_belief)
 
 		# logits using prior 
-		prior_logits = self.prior(torch.zeros(latent_belief.size(0), self.N))
+		prior_logits = self.prior(torch.zeros(latent_belief.size(0), self.N, device=self.device))
 		prior_logits = prior_logits.view(-1, self.N, self.K)
 
-		next_prior_logits = self.prior(torch.zeros(next_latent_belief.size(0), self.N))
+		next_prior_logits = self.prior(torch.zeros(next_latent_belief.size(0), self.N, device=self.device))
 		next_prior_logits = next_prior_logits.view(-1, self.N, self.K)
 
 		# reshape to match prior output shape

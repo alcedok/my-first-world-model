@@ -46,7 +46,6 @@ class PartiallyObservable(gym.ObservationWrapper):
 		
 		# encode the partially observable view into a numpy array
 		# only keep object_id dimension
-		# transpose for interpretability
 		view = grid.encode(vis_mask)[:,:,0]
 
 		return {'observation': view}
@@ -71,15 +70,14 @@ class FullyObservable(gym.ObservationWrapper):
 			dtype='uint8')
 
 		self.observation_space = spaces.Dict({
-			'stat': state_space,
+			'state': state_space,
 			'agent_direction': spaces.Discrete(4)
 			})
 
 	def observation(self, obs):
 		env = self.unwrapped
 		# only keep object_id dimension
-		# transpose for interpretability
-		state = env.grid.encode()[:,:,0].T
+		state = env.grid.encode()[:,:,0]
 		
 		# include agent in view 
 		state[env.agent_pos[1]][env.agent_pos[0]] = np.array(
@@ -111,7 +109,7 @@ class PriviledgedModelBuilder(gym.ObservationWrapper):
 		self.partially_observable_wrapper = PartiallyObservable(env)
 		
 		self.observation_space = spaces.Dict({
-			'full_observation': self.fully_observable_wrapper.observation_space['observation'],
+			'full_observation': self.fully_observable_wrapper.observation_space['state'],
 			'partial_observation': self.partially_observable_wrapper.observation_space['observation'],
 			'agent_direction': self.fully_observable_wrapper.observation_space['agent_direction']
 			})
