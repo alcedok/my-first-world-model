@@ -29,7 +29,8 @@ from models.utils import (world_model_loss,
 class WorldModel(nn.Module):
 	def __init__(self, 
 			  config: WorldModelConfig,
-			  model_id=0):
+			  model_id=0, 
+			  device='cpu'):
 		super().__init__()
 
 		#configs
@@ -49,9 +50,9 @@ class WorldModel(nn.Module):
 		self.proposed_class_weights = None 
 
 		# models
-		self.observation_model = ObservationModel(self.observation_model_config)
-		self.transition_model = TransitionModel(self.transition_model_config)
-		self.reward_model = RewardModel(self.reward_model_config)
+		self.observation_model = ObservationModel(self.observation_model_config, device=device).to(device)
+		self.transition_model = TransitionModel(self.transition_model_config).to(device)
+		self.reward_model = RewardModel(self.reward_model_config).to(device)
 		
 		self.prev_belief = self.init_belief()
 		self.belief = self.prev_belief
@@ -308,14 +309,14 @@ def sample_from_latent(model, action_list,
 		# sample using uniform
 		states = uniform_latent_sampler(latent_shape, 
 										temperature=cur_temp, 
-										hard=False).view(-1, N*K).view(-1, N*K, 1, 1)	
+										hard=False).view(-1, N*K).view(-1, N*K, 1, 1).to(device)	
 	elif prior_type == 'learned':
 		# use learn, ensure no gradients are accumulated
 		with torch.no_grad():
-			prior_logits = model.observation_model.prior(torch.zeros(B, N)).view(-1, N, K)
+			prior_logits = model.observation_model.prior(torch.zeros(B, N, device=device)).view(-1, N, K)
 			states = learned_prior_sampler(prior_logits, 
 								  temperature=cur_temp, 
-								  hard=False).view(-1, N*K).view(-1, N*K, 1, 1)
+								  hard=False).view(-1, N*K).view(-1, N*K, 1, 1).to(device)
 	else:
 		raise NotImplementedError('prior_type {} is not currently supported.'.format(prior_type))
 	
